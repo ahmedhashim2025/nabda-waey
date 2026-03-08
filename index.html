@@ -1,81 +1,119 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-X7941L2V41"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-X7941L2V41');
-    </script>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ahmed Hashim | Python Developer & نبض وعي</title>
+    <title>نبضة وعي - محاكاة التوعية واليقظة</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        body {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            text-align: center;
-            padding: 20px;
-        }
-        .container {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            max-width: 450px;
-            width: 100%;
-        }
-        h1 { color: #4ecca3; margin-bottom: 10px; font-size: 2.2em; }
-        p { color: #eeeeee; line-height: 1.6; font-size: 1.1em; }
-        .skills { display: flex; gap: 10px; justify-content: center; margin-top: 15px; }
-        .skill-tag { background: #4ecca3; color: #1a1a2e; padding: 5px 12px; border-radius: 50px; font-weight: bold; font-size: 0.8em; }
-        
-        h2 { color: #ffffff; font-size: 1.4em; margin-top: 25px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
-        
-        .btn-nabd {
-            display: block;
-            margin-top: 12px;
-            padding: 12px;
-            text-decoration: none;
-            color: white;
-            border-radius: 10px;
-            font-weight: bold;
-            transition: 0.3s;
-            font-size: 1.1em;
-        }
-        .fb { background: #1877F2; }
-        .yt { background: #ff0000; }
-        .ig { background: #e4405f; }
-        .btn-nabd:hover { opacity: 0.8; transform: translateY(-2px); }
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap');
+        body { font-family: 'Tajawal', sans-serif; }
+        .pulse-animation { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .8; transform: scale(1.05); } }
+        .awareness-meter { background: linear-gradient(to left, #e5e7eb, #3b82f6); transition: width 0.5s ease-in-out; }
+        .chart-container { min-height: 250px; max-height: 400px; position: relative; }
+        .journey-step { transition: all 0.3s ease; }
+        .journey-step.active { transform: scale(1.1); box-shadow: 0 0 20px rgba(59, 130, 246, 0.5); }
+        .moment-card { transition: all 0.5s ease; transform-style: preserve-3d; cursor: pointer; position: relative; }
+        .moment-card.flipped { transform: rotateY(180deg); }
+        .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 0.75rem; }
+        .card-back { transform: rotateY(180deg); }
     </style>
 </head>
-<body>
+<body class="bg-gray-50 text-gray-800">
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-blue-800 mb-4 pulse-animation">نبضة وعي</h1>
+            <p class="text-xl text-gray-600 mb-6">محاكاة تفاعلية لرحلة اليقظة والوعي</p>
+        </header>
 
-    <div class="container">
-        <h1>Ahmed Hashim Abdo</h1>
-        <p>مرحباً بكم في عالمي الرقمي. أنا مبرمج بايثون شغوف بتطوير الويب وبناء الحلول الذكية.</p>
-        
-        <div class="skills">
-            <span class="skill-tag">Python</span>
-            <span class="skill-tag">HTML/CSS</span>
-            <span class="skill-tag">AI Logic</span>
-        </div>
+        <main>
+            <section class="bg-white rounded-xl shadow-lg p-6 mb-8">
+                <h2 class="text-2xl font-bold text-blue-700 mb-6">ضبط معلمات الوعي</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label class="block font-medium">مستوى الوعي الحالي</label>
+                        <input type="range" id="awarenessLevel" min="0" max="100" value="30" class="w-full h-2 bg-gray-200 rounded-lg cursor-pointer">
+                        <span id="awarenessValue" class="text-blue-600 font-bold">30%</span>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="block font-medium">المؤثرات الخارجية (الضجيج)</label>
+                        <input type="range" id="externalStimuli" min="0" max="100" value="70" class="w-full h-2 bg-gray-200 rounded-lg cursor-pointer">
+                        <span id="stimuliValue" class="text-blue-600 font-bold">70%</span>
+                    </div>
+                </div>
+                <button id="simulateBtn" class="mt-6 w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition">ابدأ المحاكاة</button>
+            </section>
 
-        <h2>مشروع نبض وعي</h2>
-        <a href="https://www.facebook.com/profile.php?id=61582386639986" class="btn-nabd fb" target="_blank">تابع صفحة لحظة وعي</a>
-        <a href="https://www.youtube.com/@NabdatWaey" class="btn-nabd yt" target="_blank">شاهدنا على يوتيوب</a>
-        <a href="https://www.instagram.com/salamaahmedwa" class="btn-nabd ig" target="_blank">تابعنا على إنستجرام</a>
+            <section id="resultsSection" class="hidden bg-white rounded-xl shadow-lg p-6 mb-8">
+                <h3 class="text-xl font-bold mb-4">مستوى اليقظة الناتجة: <span id="finalPercent">0%</span></h3>
+                <div class="w-full bg-gray-200 rounded-full h-6 mb-6 overflow-hidden">
+                    <div id="awarenessProgress" class="awareness-meter h-full flex items-center justify-center text-white text-xs" style="width: 0%"></div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="awarenessJourneyChart"></canvas>
+                </div>
+            </section>
+
+            <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="moment-card h-48" onclick="this.classList.toggle('flipped')">
+                    <div class="card-face bg-blue-600 text-white p-6 flex items-center justify-center text-xl font-bold text-center">لحظة الصمت</div>
+                    <div class="card-face card-back bg-white border-2 border-blue-600 p-4 text-center">الوعي يأتي في السكون. جرب دقيقة صمت الآن.</div>
+                </div>
+                <div class="moment-card h-48" onclick="this.classList.toggle('flipped')">
+                    <div class="card-face bg-purple-600 text-white p-6 flex items-center justify-center text-xl font-bold text-center">السؤال الصحيح</div>
+                    <div class="card-face card-back bg-white border-2 border-purple-600 p-4 text-center">لماذا تفعل ما تفعله الآن؟ الإجابة هي الوعي.</div>
+                </div>
+                <div class="moment-card h-48" onclick="this.classList.toggle('flipped')">
+                    <div class="card-face bg-green-600 text-white p-6 flex items-center justify-center text-xl font-bold text-center">لحظة الحضور</div>
+                    <div class="card-face card-back bg-white border-2 border-green-600 p-4 text-center">أنت لست أفكارك، أنت المراقب لهذه الأفكار.</div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="text-center py-6 border-t">
+            <p class="text-gray-600">نبضة وعي · لإيقاظ الفكر في كل جيل</p>
+        </footer>
     </div>
 
+    <script>
+        const awarenessLevel = document.getElementById('awarenessLevel');
+        const externalStimuli = document.getElementById('externalStimuli');
+        const awarenessValue = document.getElementById('awarenessValue');
+        const stimuliValue = document.getElementById('stimuliValue');
+        const simulateBtn = document.getElementById('simulateBtn');
+        const resultsSection = document.getElementById('resultsSection');
+        const awarenessProgress = document.getElementById('awarenessProgress');
+        const finalPercent = document.getElementById('finalPercent');
+        
+        let myChart = null;
+
+        awarenessLevel.addEventListener('input', () => awarenessValue.textContent = awarenessLevel.value + '%');
+        externalStimuli.addEventListener('input', () => stimuliValue.textContent = externalStimuli.value + '%');
+
+        simulateBtn.addEventListener('click', () => {
+            const val = Math.round((parseInt(awarenessLevel.value) + (100 - parseInt(externalStimuli.value))) / 2);
+            resultsSection.classList.remove('hidden');
+            awarenessProgress.style.width = val + '%';
+            finalPercent.textContent = val + '%';
+            
+            const ctx = document.getElementById('awarenessJourneyChart').getContext('2d');
+            if (myChart) myChart.destroy();
+            myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['البداية', 'التساؤل', 'الإدراك', 'اليقظة'],
+                    datasets: [{
+                        label: 'مسار الوعي التقديري',
+                        data: [20, 40, 70, val],
+                        borderColor: '#3b82f6',
+                        tension: 0.4
+                    }]
+                }
+            });
+            resultsSection.scrollIntoView({ behavior: 'smooth' });
+        });
+    </script>
 </body>
 </html>
