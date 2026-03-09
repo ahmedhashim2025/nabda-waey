@@ -6,114 +6,128 @@
     <title>نبضة وعي - محاكاة التوعية واليقظة</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap');
-        body { font-family: 'Tajawal', sans-serif; }
-        .pulse-animation { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .8; transform: scale(1.05); } }
-        .awareness-meter { background: linear-gradient(to left, #e5e7eb, #3b82f6); transition: width 0.5s ease-in-out; }
-        .chart-container { min-height: 250px; max-height: 400px; position: relative; }
-        .journey-step { transition: all 0.3s ease; }
-        .journey-step.active { transform: scale(1.1); box-shadow: 0 0 20px rgba(59, 130, 246, 0.5); }
-        .moment-card { transition: all 0.5s ease; transform-style: preserve-3d; cursor: pointer; position: relative; }
-        .moment-card.flipped { transform: rotateY(180deg); }
-        .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 0.75rem; }
-        .card-back { transform: rotateY(180deg); }
+        body { font-family: 'Tajawal', sans-serif; background-color: #f8fafc; }
+        .gradient-bg { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); }
+        .card-hover:hover { transform: translateY(-5px); transition: all 0.3s ease; }
+        .chart-container { position: relative; height: 300px; width: 100%; }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800">
-    <div class="container mx-auto px-4 py-8 max-w-6xl">
-        <header class="text-center mb-12">
-            <h1 class="text-4xl md:text-5xl font-bold text-blue-800 mb-4 pulse-animation">نبضة وعي</h1>
-            <p class="text-xl text-gray-600 mb-6">محاكاة تفاعلية لرحلة اليقظة والوعي</p>
-        </header>
+<body class="text-gray-800">
 
-        <main>
-            <section class="bg-white rounded-xl shadow-lg p-6 mb-8">
-                <h2 class="text-2xl font-bold text-blue-700 mb-6">ضبط معلمات الوعي</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="space-y-2">
-                        <label class="block font-medium">مستوى الوعي الحالي</label>
-                        <input type="range" id="awarenessLevel" min="0" max="100" value="30" class="w-full h-2 bg-gray-200 rounded-lg cursor-pointer">
-                        <span id="awarenessValue" class="text-blue-600 font-bold">30%</span>
+    <header class="gradient-bg text-white py-12 px-4 text-center shadow-lg">
+        <h1 class="text-4xl font-bold mb-2 pulse-animation">نبضة وعي</h1>
+        <p class="text-xl opacity-90">محاكاة تفاعلية لرحلة اليقظة والتعلم المعزز</p>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                <h2 class="text-xl font-bold mb-6 flex items-center">
+                    <span class="bg-blue-100 text-blue-600 p-2 rounded-lg ml-3">⚙️</span>
+                    ضبط معلمات الوعي
+                </h2>
+                
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">مستوى الوعي الحالي: <span id="val1" class="text-blue-600 font-bold">50%</span></label>
+                        <input type="range" id="awarenessLevel" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600" value="50">
                     </div>
-                    <div class="space-y-2">
-                        <label class="block font-medium">المؤثرات الخارجية (الضجيج)</label>
-                        <input type="range" id="externalStimuli" min="0" max="100" value="70" class="w-full h-2 bg-gray-200 rounded-lg cursor-pointer">
-                        <span id="stimuliValue" class="text-blue-600 font-bold">70%</span>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2">المؤثرات الخارجية (الضجيج): <span id="val2" class="text-red-500 font-bold">30%</span></label>
+                        <input type="range" id="noiseLevel" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-red-500" value="30">
+                    </div>
+
+                    <button id="startBtn" class="w-full gradient-bg text-white font-bold py-3 rounded-xl shadow-md hover:opacity-90 transition-all">
+                        تحديث المحاكاة
+                    </button>
+                </div>
+            </div>
+
+            <div class="lg:col-span-2 space-y-8">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <h2 class="text-xl font-bold mb-4">تحليل مسار الوعي</h2>
+                    <div class="chart-container">
+                        <canvas id="awarenessChart"></canvas>
                     </div>
                 </div>
-                <button id="simulateBtn" class="mt-6 w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition">ابدأ المحاكاة</button>
-            </section>
+            </div>
+        </div>
 
-            <section id="resultsSection" class="hidden bg-white rounded-xl shadow-lg p-6 mb-8">
-                <h3 class="text-xl font-bold mb-4">مستوى اليقظة الناتجة: <span id="finalPercent">0%</span></h3>
-                <div class="w-full bg-gray-200 rounded-full h-6 mb-6 overflow-hidden">
-                    <div id="awarenessProgress" class="awareness-meter h-full flex items-center justify-center text-white text-xs" style="width: 0%"></div>
-                </div>
-                <div class="chart-container">
-                    <canvas id="awarenessJourneyChart"></canvas>
-                </div>
-            </section>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+            <div class="bg-white p-6 rounded-xl shadow-sm border-r-4 border-blue-500 card-hover">
+                <h3 class="font-bold text-lg mb-2">🧘 لحظة الصمت</h3>
+                <p class="text-gray-600 text-sm">الوعي يبدأ عندما ينتهي الضجيج الداخلي. خصص دقيقة واحدة الآن.</p>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-sm border-r-4 border-purple-500 card-hover">
+                <h3 class="font-bold text-lg mb-2">🧐 السؤال الجوهري</h3>
+                <p class="text-gray-600 text-sm">هل أنت من يقود أفكارك أم أن أفكارك هي من تقودك؟</p>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-sm border-r-4 border-green-500 card-hover">
+                <h3 class="font-bold text-lg mb-2">✨ قوة الحضور</h3>
+                <p class="text-gray-600 text-sm">أنت الآن هنا، في هذه اللحظة، وهذا هو المكان الوحيد الذي يوجد فيه الوعي.</p>
+            </div>
+        </div>
+    </main>
 
-            <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <div class="moment-card h-48" onclick="this.classList.toggle('flipped')">
-                    <div class="card-face bg-blue-600 text-white p-6 flex items-center justify-center text-xl font-bold text-center">لحظة الصمت</div>
-                    <div class="card-face card-back bg-white border-2 border-blue-600 p-4 text-center">الوعي يأتي في السكون. جرب دقيقة صمت الآن.</div>
-                </div>
-                <div class="moment-card h-48" onclick="this.classList.toggle('flipped')">
-                    <div class="card-face bg-purple-600 text-white p-6 flex items-center justify-center text-xl font-bold text-center">السؤال الصحيح</div>
-                    <div class="card-face card-back bg-white border-2 border-purple-600 p-4 text-center">لماذا تفعل ما تفعله الآن؟ الإجابة هي الوعي.</div>
-                </div>
-                <div class="moment-card h-48" onclick="this.classList.toggle('flipped')">
-                    <div class="card-face bg-green-600 text-white p-6 flex items-center justify-center text-xl font-bold text-center">لحظة الحضور</div>
-                    <div class="card-face card-back bg-white border-2 border-green-600 p-4 text-center">أنت لست أفكارك، أنت المراقب لهذه الأفكار.</div>
-                </div>
-            </section>
-        </main>
-
-        <footer class="text-center py-6 border-t">
-            <p class="text-gray-600">نبضة وعي · لإيقاظ الفكر في كل جيل</p>
-        </footer>
-    </div>
+    <footer class="text-center py-8 text-gray-500 text-sm">
+        جميع الحقوق محفوظة لمشروع نبضة وعي - أحمد هاشم &copy; 2026
+    </footer>
 
     <script>
-        const awarenessLevel = document.getElementById('awarenessLevel');
-        const externalStimuli = document.getElementById('externalStimuli');
-        const awarenessValue = document.getElementById('awarenessValue');
-        const stimuliValue = document.getElementById('stimuliValue');
-        const simulateBtn = document.getElementById('simulateBtn');
-        const resultsSection = document.getElementById('resultsSection');
-        const awarenessProgress = document.getElementById('awarenessProgress');
-        const finalPercent = document.getElementById('finalPercent');
-        
-        let myChart = null;
+        const ctx = document.getElementById('awarenessChart').getContext('2d');
+        let awarenessChart;
 
-        awarenessLevel.addEventListener('input', () => awarenessValue.textContent = awarenessLevel.value + '%');
-        externalStimuli.addEventListener('input', () => stimuliValue.textContent = externalStimuli.value + '%');
-
-        simulateBtn.addEventListener('click', () => {
-            const val = Math.round((parseInt(awarenessLevel.value) + (100 - parseInt(externalStimuli.value))) / 2);
-            resultsSection.classList.remove('hidden');
-            awarenessProgress.style.width = val + '%';
-            finalPercent.textContent = val + '%';
-            
-            const ctx = document.getElementById('awarenessJourneyChart').getContext('2d');
-            if (myChart) myChart.destroy();
-            myChart = new Chart(ctx, {
+        function initChart(data1, data2) {
+            if (awarenessChart) awarenessChart.destroy();
+            awarenessChart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: ['البداية', 'التساؤل', 'الإدراك', 'اليقظة'],
+                    labels: ['البداية', 'المرحلة 1', 'المرحلة 2', 'المرحلة 3', 'المرحلة 4', 'الآن'],
                     datasets: [{
-                        label: 'مسار الوعي التقديري',
-                        data: [20, 40, 70, val],
+                        label: 'نمو الوعي',
+                        data: data1,
                         borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }, {
+                        label: 'مستوى التشتت',
+                        data: data2,
+                        borderColor: '#ef4444',
+                        borderDash: [5, 5],
+                        fill: false,
                         tension: 0.4
                     }]
-                }
+                },
+                options: { responsive: true, maintainAspectRatio: false }
             });
-            resultsSection.scrollIntoView({ behavior: 'smooth' });
-        });
+        }
+
+        // التفاعل مع الأشرطة
+        document.getElementById('awarenessLevel').oninput = function() {
+            document.getElementById('val1').innerText = this.value + '%';
+        }
+        document.getElementById('noiseLevel').oninput = function() {
+            document.getElementById('val2').innerText = this.value + '%';
+        }
+
+        document.getElementById('startBtn').onclick = function() {
+            const level = parseInt(document.getElementById('awarenessLevel').value);
+            const noise = parseInt(document.getElementById('noiseLevel').value);
+            
+            // محاكاة بيانات حركية
+            const awarenessData = [10, 25, 40, level - 10, level - 5, level];
+            const noiseData = [80, 70, 60, noise + 10, noise + 5, noise];
+            
+            initChart(awarenessData, noiseData);
+        };
+
+        // تشغيل أولي
+        initChart([10, 20, 30, 40, 45, 50], [90, 80, 70, 50, 40, 30]);
     </script>
 </body>
 </html>
