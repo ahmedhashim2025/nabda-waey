@@ -3,131 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نبضة وعي - محاكاة التوعية واليقظة</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <title>نبضة وعي - رحلة الوعي</title>
     <style>
-        body { font-family: 'Tajawal', sans-serif; background-color: #f8fafc; }
-        .gradient-bg { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); }
-        .card-hover:hover { transform: translateY(-5px); transition: all 0.3s ease; }
-        .chart-container { position: relative; height: 300px; width: 100%; }
+        /* إضافة خطوط عربية واضحة وتنسيق الاتجاه */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: #fff;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2e3192;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #666;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 40px;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card img, .card .icon {
+            font-size: 40px;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        /* ألوان الكروت كما في تصميمك */
+        .card-1 { border-top: 5px solid #e0f9e0; }
+        .card-2 { border-top: 5px solid #f0e6ff; }
+        .card-3 { border-top: 5px solid #e6f0ff; }
+
+        .about-section {
+            background-color: #5d3fd3;
+            color: white;
+            padding: 50px;
+            text-align: center;
+        }
+
+        .about-grid {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .about-item {
+            max-width: 400px;
+            margin: 20px;
+        }
     </style>
 </head>
-<body class="text-gray-800">
+<body>
 
-    <header class="gradient-bg text-white py-12 px-4 text-center shadow-lg">
-        <h1 class="text-4xl font-bold mb-2 pulse-animation">نبضة وعي</h1>
-        <p class="text-xl opacity-90">محاكاة تفاعلية لرحلة اليقظة والتعلم المعزز</p>
+    <header>
+        <div class="logo">
+            <span>نبضة وعي</span>
+            <span style="font-size: 20px;">💫</span>
+        </div>
+        <nav>
+            <a href="#">الرئيسية</a>
+            <a href="#">المحاكاة</a>
+            <a href="#">الرحلة</a>
+            <a href="#">عن المشروع</a>
+        </nav>
     </header>
 
-    <main class="max-w-6xl mx-auto px-4 py-8">
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                <h2 class="text-xl font-bold mb-6 flex items-center">
-                    <span class="bg-blue-100 text-blue-600 p-2 rounded-lg ml-3">⚙️</span>
-                    ضبط معلمات الوعي
-                </h2>
-                
-                <div class="space-y-6">
-                    <div>
-                        <label class="block text-sm font-medium mb-2">مستوى الوعي الحالي: <span id="val1" class="text-blue-600 font-bold">50%</span></label>
-                        <input type="range" id="awarenessLevel" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600" value="50">
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium mb-2">المؤثرات الخارجية (الضجيج): <span id="val2" class="text-red-500 font-bold">30%</span></label>
-                        <input type="range" id="noiseLevel" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-red-500" value="30">
-                    </div>
-
-                    <button id="startBtn" class="w-full gradient-bg text-white font-bold py-3 rounded-xl shadow-md hover:opacity-90 transition-all">
-                        تحديث المحاكاة
-                    </button>
-                </div>
-            </div>
-
-            <div class="lg:col-span-2 space-y-8">
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                    <h2 class="text-xl font-bold mb-4">تحليل مسار الوعي</h2>
-                    <div class="chart-container">
-                        <canvas id="awarenessChart"></canvas>
-                    </div>
-                </div>
-            </div>
+    <div class="grid-container">
+        <div class="card card-1">
+            <span class="icon">🧘</span>
+            <h3>التأمل</h3>
+            <p>الغوص في أعماق الذات لاكتشاف السلام الداخلي والهدوء النفسي.</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-            <div class="bg-white p-6 rounded-xl shadow-sm border-r-4 border-blue-500 card-hover">
-                <h3 class="font-bold text-lg mb-2">🧘 لحظة الصمت</h3>
-                <p class="text-gray-600 text-sm">الوعي يبدأ عندما ينتهي الضجيج الداخلي. خصص دقيقة واحدة الآن.</p>
+        <div class="card card-2">
+            <span class="icon">🎵</span>
+            <h3>الموسيقى</h3>
+            <p>ألحان هادئة تأخذك في رحلة من الاسترخاء وتجديد الطاقة.</p>
+        </div>
+
+        <div class="card card-3">
+            <span class="icon">🌅</span>
+            <h3>الاستمتاع بالعيش</h3>
+            <p>تعلم كيف تعيش اللحظة الحالية بكل تفاصيلها وتمتن لكل شيء حولك.</p>
+        </div>
+
+        <div class="card">
+            <span class="icon">📚</span>
+            <h3>القراءة</h3>
+            <p>توسيع المدارك من خلال رحلة معرفية في عالم الكتب والوعي.</p>
+        </div>
+
+        <div class="card" style="border-top: 5px solid #fff9e6;">
+            <span class="icon">🌿</span>
+            <h3>الطبيعة</h3>
+            <p>المشي في الطبيعة والشعور بالهدوء والسلام، حيث تتناغم مع إيقاع الكون.</p>
+        </div>
+
+        <div class="card">
+            <span class="icon">❤️</span>
+            <h3>التعامل بوعي</h3>
+            <p>بناء علاقات حقيقية نابعة من فهم عميق للذات وللآخرين.</p>
+        </div>
+    </div>
+
+    <section class="about-section">
+        <h2>عن مشروع نبضة</h2>
+        <div class="about-grid">
+            <div class="about-item">
+                <h3>الرؤية</h3>
+                <p>نبضة هي منصة تفاعلية تهدف إلى مساعدة الأفراد على اكتشاف وعيهم الحقيقي والعيش بحضور أكثر في كل لحظة من لحظات حياتهم.</p>
             </div>
-            <div class="bg-white p-6 rounded-xl shadow-sm border-r-4 border-purple-500 card-hover">
-                <h3 class="font-bold text-lg mb-2">🧐 السؤال الجوهري</h3>
-                <p class="text-gray-600 text-sm">هل أنت من يقود أفكارك أم أن أفكارك هي من تقودك؟</p>
-            </div>
-            <div class="bg-white p-6 rounded-xl shadow-sm border-r-4 border-green-500 card-hover">
-                <h3 class="font-bold text-lg mb-2">✨ قوة الحضور</h3>
-                <p class="text-gray-600 text-sm">أنت الآن هنا، في هذه اللحظة، وهذا هو المكان الوحيد الذي يوجد فيه الوعي.</p>
+            <div class="about-item">
+                <h3>الرسالة</h3>
+                <p>نؤمن أن الوعي بالذات هو أساس التطور الشخصي والسعادة الحقيقية، من خلال المحاكاة التفاعلية والتأمل الموجه.</p>
             </div>
         </div>
-    </main>
+    </section>
 
-    <footer class="text-center py-8 text-gray-500 text-sm">
-        جميع الحقوق محفوظة لمشروع نبضة وعي - أحمد هاشم &copy; 2026
-    </footer>
-
-    <script>
-        const ctx = document.getElementById('awarenessChart').getContext('2d');
-        let awarenessChart;
-
-        function initChart(data1, data2) {
-            if (awarenessChart) awarenessChart.destroy();
-            awarenessChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['البداية', 'المرحلة 1', 'المرحلة 2', 'المرحلة 3', 'المرحلة 4', 'الآن'],
-                    datasets: [{
-                        label: 'نمو الوعي',
-                        data: data1,
-                        borderColor: '#3b82f6',
-                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                        fill: true,
-                        tension: 0.4
-                    }, {
-                        label: 'مستوى التشتت',
-                        data: data2,
-                        borderColor: '#ef4444',
-                        borderDash: [5, 5],
-                        fill: false,
-                        tension: 0.4
-                    }]
-                },
-                options: { responsive: true, maintainAspectRatio: false }
-            });
-        }
-
-        // التفاعل مع الأشرطة
-        document.getElementById('awarenessLevel').oninput = function() {
-            document.getElementById('val1').innerText = this.value + '%';
-        }
-        document.getElementById('noiseLevel').oninput = function() {
-            document.getElementById('val2').innerText = this.value + '%';
-        }
-
-        document.getElementById('startBtn').onclick = function() {
-            const level = parseInt(document.getElementById('awarenessLevel').value);
-            const noise = parseInt(document.getElementById('noiseLevel').value);
-            
-            // محاكاة بيانات حركية
-            const awarenessData = [10, 25, 40, level - 10, level - 5, level];
-            const noiseData = [80, 70, 60, noise + 10, noise + 5, noise];
-            
-            initChart(awarenessData, noiseData);
-        };
-
-        // تشغيل أولي
-        initChart([10, 20, 30, 40, 45, 50], [90, 80, 70, 50, 40, 30]);
-    </script>
 </body>
 </html>
